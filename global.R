@@ -1,8 +1,9 @@
 
 # Packages required -----
 pacman::p_load(
-    tidyverse, shiny, shinydashboard, shinyjs, memoise, fs, httr, emo
+    tidyverse, shiny, shinydashboard, shinyjs, memoise, fs, httr, emo, shinyWidgets, dhis2r, gt
 )
+
 
 # run options
 options(shiny.launch.browser = TRUE)

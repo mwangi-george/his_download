@@ -1,7 +1,7 @@
 
 # Custom login page style --------
 loginPageStyle <-
-    "
+  "
         body {
         background: #ffcccb; /* Changed background to a light coral */
         background: -webkit-linear-gradient(to bottom, #ffcccb, #f5f5f5); /* Chrome 10-25, Safari 5.1-6 */
@@ -59,3 +59,6 @@ global_modal_style <- HTML("
 # style for logout button
 logout_button_style <- "background-color: white !important; border: 0; border-radius: 20px; font-weight: bold; margin:5px; padding: 10px;"
 
+buttonStyle <- function(button_width){
+  run_query_button <- glue::glue("color: #fff; background-color: #17a2b8; border-color: #17a2b8; width: {button_width}px; height: 35px; border-radius: 20px; border: 2px solid #17a2b8;")
+}

@@ -1,6 +1,8 @@
 download_tab <- tabItem(
     tabName = "data_download",
-    fluidRow()
+    fluidRow(
+        downloadUI("download_module")
+    )
 )
 
 

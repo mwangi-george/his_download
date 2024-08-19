@@ -125,6 +125,41 @@ if (class(response) %in% c("tbl_df", "tbl", "data.frame")) {
 
 ```{r}
 dhis2_connection$get_metadata(endpoint = "dataElements")
+
+extract_metadata_units <- memoise(
+  function(his_username, his_password,
+           base_url = "https://hiskenya.org", 
+           org_units_level = 2, 
+           endpoint = "organisationUnits", 
+           searched_dx = NULL) {
+      
+    if (endpoint == "organisationUnits") {
+      endpoint_url <- glue("{base_url}/api/{endpoint}?fields=name,id&filter=level:in:[{org_units_level}]&paging=false")
+    } else if (endpoint == "dataElements") {
+        endpoint_url <- glue("{base_url}/api/{endpoint}?fields=name,id&filter=name:like:{searched_dx}&paging=false")
+    }
+      
+    tryCatch(
+      expr = {
+        response <- GET(url = endpoint_url, authenticate(his_username, his_password)) %>%
+          content() %>%
+          jsonlite::toJSON(auto_unbox = T) %>%
+          jsonlite::fromJSON()
+        response_df <- response[[1]]
+        response_named_vector <- set_names(response_df$id, response_df$name)
+
+        return(response_named_vector)
+      },
+      error = function(e) {
+        print(e)
+      }
+    )
+  }
+)
+
+extract_metadata_units("mikonya", "Kenya2030", endpoint = "dataElements", searched_dx = "747A") -> x
+
+x[1]
 ```
 
 

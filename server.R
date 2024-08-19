@@ -55,7 +55,7 @@ server <- function(input, output, session) {
     )
 
     # Call download module
-    downloadServer("download_module", his_con)
+    downloadServer("download_module", his_con, input$his_user, input$his_pass)
   })
 
   # Logout button

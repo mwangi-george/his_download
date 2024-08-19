@@ -11,7 +11,7 @@ downloadUI <- function(id) {
       pickerInput(
         ns("analytic"),
         label = "Select Data Element",
-        choices = data_elements(),
+        choices = NULL,
         width = "100%",
         multiple = TRUE,
         options = pickerOptions(actionsBox = TRUE, `live-search` = TRUE)
@@ -20,10 +20,9 @@ downloadUI <- function(id) {
       pickerInput(
         ns("org_unit"),
         "Select Org Unit",
-        choices = org_units_query(),
+        choices = NULL,
         multiple = TRUE,
         width = "100%",
-        selected = "HfVjCurKxh2",
         options = pickerOptions(actionsBox = TRUE, `live-search` = TRUE)
       ),
       hr(),
@@ -42,16 +41,26 @@ downloadUI <- function(id) {
   )
 }
 
-downloadServer <- function(id, connection_to_his) {
+downloadServer <- function(id, connection_to_his, user, pass) {
   moduleServer(id, function(input, output, session) {
+    observe({
+      req(connection_to_his)
+      orgs <- extract_metadata_units(user, pass)
+      elements <- extract_metadata_units(user, pass, endpoint = "dataElements", searched_dx = "747A")
 
-
-    # observe({
-    #     req(connection_to_his)
-    #
-    #     updateSelectizeInput(session, "analytic", choices = extract_dx_metadata(connection_to_his))
-    #
-    # })
+      req(orgs)
+      req(elements)
+      updatePickerInput(
+        session, "org_unit",
+        choices = orgs,
+        selected = orgs[1]
+      )
+      updatePickerInput(
+        session, "analytic",
+        choices = elements,
+        selected = elements[1]
+      )
+    })
 
     his_output <- eventReactive(input$trigger_download, {
       # download requires connection
@@ -67,8 +76,8 @@ downloadServer <- function(id, connection_to_his) {
         expr = {
           # extract
           response <- extract_data_from_his(
-              con = connection_to_his, analytic = input$analytic,
-              org_unit = input$org_unit, date_range = period_formatted
+            con = connection_to_his, analytic = input$analytic,
+            org_unit = input$org_unit, date_range = period_formatted
           )
           return(response)
         },
@@ -105,7 +114,9 @@ downloadServer <- function(id, connection_to_his) {
         }
       )
     } else {
-      output$his_data_table <- render_gt({NULL})
+      output$his_data_table <- render_gt({
+        NULL
+      })
     }
   })
 }

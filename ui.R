@@ -15,11 +15,10 @@ ui <- fluidPage(
       "his_base_url",
       label = "A valid DHIS2 instance",
       placeholder = "Example: https://hiskenya.org",
-      value = "https://hiskenya.org",
       width = "100%"
       ),
-    textInput("his_user", label = "DHIS2 Username", value = "mikonya", width = "100%"), # --- remove value
-    passwordInput("his_pass", "DHIS2 Password", value = "Kenya2030", width = "100%"),
+    textInput("his_user", label = "DHIS2 Username", width = "100%"), # --- remove value
+    passwordInput("his_pass", "DHIS2 Password", width = "100%"),
     actionButton("login", "Login", class = "btn-primary", style = "width: 100%;")
   ),
   div(

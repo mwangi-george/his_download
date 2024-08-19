@@ -3,18 +3,27 @@ downloadUI <- function(id) {
 
   tagList(
     box(
-      width = 3,
+      width = 4,
       title = "Controls",
       height = 570,
       solidHeader = TRUE,
       status = "info",
-      pickerInput(
+      searchInput(
+        ns("search_data_elements"),
+        "Search Data Elements",
+        value = "747A",
+        btnSearch = icon("magnifying-glass"),
+        btnReset = icon("xmark"),
+        resetValue = "747A",
+        width = "100%"
+      ),
+      selectInput(
         ns("analytic"),
         label = "Select Data Element",
         choices = NULL,
         width = "100%",
-        multiple = TRUE,
-        options = pickerOptions(actionsBox = TRUE, `live-search` = TRUE)
+        multiple = TRUE
+        # options = pickerOptions(actionsBox = TRUE, `live-search` = TRUE)
       ),
       hr(),
       pickerInput(
@@ -30,7 +39,7 @@ downloadUI <- function(id) {
       actionButton(ns("trigger_download"), "Extract", icon = icon("cloud-arrow-down"), style = buttonStyle(150))
     ),
     box(
-      width = 9,
+      width = 8,
       title = "Output",
       height = 570,
       solidHeader = TRUE,
@@ -44,9 +53,11 @@ downloadUI <- function(id) {
 downloadServer <- function(id, connection_to_his, user, pass) {
   moduleServer(id, function(input, output, session) {
     observe({
-      req(connection_to_his)
+      input$search_data_elements
+
+      req(input$search_data_elements)
       orgs <- extract_metadata_units(user, pass)
-      elements <- extract_metadata_units(user, pass, endpoint = "dataElements", searched_dx = "747A")
+      elements <- extract_metadata_units(user, pass, endpoint = "dataElements", searched_dx = input$search_data_elements)
 
       req(orgs)
       req(elements)
@@ -55,7 +66,7 @@ downloadServer <- function(id, connection_to_his, user, pass) {
         choices = orgs,
         selected = orgs[1]
       )
-      updatePickerInput(
+      updateSelectInput(
         session, "analytic",
         choices = elements,
         selected = elements[1]

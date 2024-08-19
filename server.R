@@ -6,7 +6,7 @@ server <- function(input, output, session) {
       tryCatch(
           expr = {
               # Construct the URL for the API endpoint
-              url <- str_c(input$his_base_url, "/api/me") # "https://hiskenya.org/api/me"
+              url <- str_c(input$his_base_url, "/api/me")
               username <- input$his_user
               password <- input$his_pass
 

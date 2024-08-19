@@ -157,7 +157,7 @@ extract_metadata_units <- memoise(
   }
 )
 
-extract_metadata_units("mikonya", "Kenya2030", endpoint = "dataElements", searched_dx = "747A") -> x
+extract_metadata_units("mikonya", "Kenya2030", org_units_level = 5) -> x
 
 x[1]
 ```

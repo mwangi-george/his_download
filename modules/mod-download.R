@@ -12,7 +12,7 @@ downloadUI <- function(id) {
         ns("analytic"),
         label = "Select Data Element",
         choices = data_elements(),
-        selected = "J6qnTev1LXw",
+        width = "100%",
         multiple = TRUE,
         options = pickerOptions(actionsBox = TRUE, `live-search` = TRUE)
       ),
@@ -22,6 +22,7 @@ downloadUI <- function(id) {
         "Select Org Unit",
         choices = org_units_query(),
         multiple = TRUE,
+        width = "100%",
         selected = "HfVjCurKxh2",
         options = pickerOptions(actionsBox = TRUE, `live-search` = TRUE)
       ),
@@ -43,6 +44,15 @@ downloadUI <- function(id) {
 
 downloadServer <- function(id, connection_to_his) {
   moduleServer(id, function(input, output, session) {
+
+
+    # observe({
+    #     req(connection_to_his)
+    #
+    #     updateSelectizeInput(session, "analytic", choices = extract_dx_metadata(connection_to_his))
+    #
+    # })
+
     his_output <- eventReactive(input$trigger_download, {
       # download requires connection
       req(connection_to_his)
@@ -65,7 +75,7 @@ downloadServer <- function(id, connection_to_his) {
         error = function(e) {
           # print error
           print(e)
-          notifyUser("An Error occurred extraction!", e)
+          notifyUser("An Error occurred extraction!", e$message)
           return()
         }
       )
@@ -82,10 +92,7 @@ downloadServer <- function(id, connection_to_his) {
             starts_with("period") ~ px(100),
             starts_with("value") ~ px(100)
           ) %>%
-          style_gt_table(
-            sub_title = "Results",
-            container_height = 480
-          )
+          style_gt_table(sub_title = "Results", container_height = 480)
       })
 
       # Download Functionality

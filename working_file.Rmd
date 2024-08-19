@@ -121,78 +121,11 @@ if (class(response) %in% c("tbl_df", "tbl", "data.frame")) {
     print("yes")
 }
 ```
+
+
 ```{r}
-library(gt)
-
-# Function to apply custom styles to a gt table
-style_gt_table <- function(gt_table, title = NULL, subtitle = NULL) {
-  
-  # Add title and subtitle if provided
-  if (!is.null(title)) {
-    gt_table <- gt_table %>%
-      tab_header(
-        title = title,
-        subtitle = subtitle
-      )
-  }
-  
-  # Apply custom styles
-  gt_table <- gt_table %>%
-    tab_options(
-      table.font.names = "Arial",
-      table.font.size = px(14),
-      table.border.top.style = "solid",
-      table.border.top.width = px(3),
-      table.border.bottom.style = "solid",
-      table.border.bottom.width = px(3),
-      heading.align = "center",
-      heading.title.font.size = px(20),
-      heading.subtitle.font.size = px(16),
-      heading.title.font.weight = "bold"
-    ) %>%
-    tab_style(
-      style = cell_borders(
-        sides = "all",
-        color = "grey",
-        weight = px(1)
-      ),
-      locations = cells_body()
-    ) %>%
-    tab_style(
-      style = cell_fill(color = "#f0f0f0"),
-      locations = cells_column_labels()
-    ) %>%
-    tab_style(
-      style = list(
-        cell_text(weight = "bold", color = "#FFFFFF"),
-        cell_fill(color = "#3c8dbc")
-      ),
-      locations = cells_column_labels()
-    ) %>%
-    tab_style(
-      style = cell_text(align = "center"),
-      locations = cells_body()
-    )
-  
-  return(gt_table)
-}
-
-# Example usage with a sample dataset
-data <- head(mtcars)
-gt_table <- gt(data)
-
-styled_table <- style_gt_table(
-  gt_table,
-  title = "Car Dataset",
-  subtitle = "MTCars Sample Data"
-)
-
-styled_table
-
+dhis2_connection$get_metadata(endpoint = "dataElements")
 ```
-
-
-
 
 
 

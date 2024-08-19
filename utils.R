@@ -47,8 +47,8 @@ notifyUser <- function(notificationTitle, notificationText, error = NULL) {
 
 
 org_units_query <- function() {
-  county_ids <- dbGetQuery(con, "SELECT DISTINCT county_id AS org_id, county_name AS org_name FROM org_units")
-  country_id <- dbGetQuery(con, "SELECT DISTINCT country_id AS org_id, country_name AS org_name FROM org_units")
+  county_ids <- dbGetQuery(lite_conn, "SELECT DISTINCT county_id AS org_id, county_name AS org_name FROM org_units")
+  country_id <- dbGetQuery(lite_conn, "SELECT DISTINCT country_id AS org_id, country_name AS org_name FROM org_units")
   merged_orgs <- bind_rows(county_ids, country_id) %>% arrange(org_name)
 
   named_orgs_vector <- set_names(merged_orgs$org_id, merged_orgs$org_name)
@@ -89,8 +89,9 @@ style_gt_table <- function(gt_table, title = NULL, sub_title = NULL, container_h
 }
 
 # Customized Data extraction function
-extract_data_from_his <- memoise(function(con, analytic, org_unit, date_range, output_format = "NAME") {
-  response <- con$get_analytics(
+extract_data_from_his <- memoise(
+  function(con, analytic, org_unit, date_range, output_format = "NAME") {
+    response <- con$get_analytics(
       analytic = c(analytic),
       org_unit = c(org_unit),
       period = date_range,
@@ -99,3 +100,11 @@ extract_data_from_his <- memoise(function(con, analytic, org_unit, date_range, o
   }
 )
 
+extract_dx_metadata <- memoise(
+  function(his_con) {
+    data_elements_df <- his_con$get_metadata(endpoint = "dataElements")
+    data_elements_bind_ids <- set_names(data_elements_df$id, data_elements_df$name)
+
+    return(data_elements_bind_ids)
+  }
+)

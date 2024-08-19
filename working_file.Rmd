@@ -1,0 +1,89 @@
+```{r}
+dx <- "rEQd6IDeXWT"
+ou <- "BjC1xL40gHo"
+pe <- "202109"
+
+sample_df <- generate_url(dx, ou, pe)
+```
+```{r}
+
+```
+
+
+
+```{r}
+sample_df %>% 
+    transmute(
+        data_element,
+        period = my(period),
+        organisation_unit,
+        value
+    )
+```
+
+
+```{r}
+library(dhis2r)
+
+dhis2_connection <- Dhis2r$new(
+    base_url = "https://hiskenya.org/",
+    username = "mikonya",
+    password = "Kenya2030"
+)
+
+
+tryCatch(
+    expr = {
+        dhis2_connection$get_analytics(
+        analytic = dx,
+        org_unit = ou,
+        period = pe,
+        output_scheme = "NAME"
+        )
+    },
+    error = function(e){
+        print(e)
+    }
+)
+
+
+library(httr)
+
+url <- "https://hiskenya.org/api/me"
+username<-"mikonya"
+password<-"Kenya2030"
+login<-GET(url, authenticate(username,password))
+#If we cannot login, stop with an error
+if(login$status == 200L) { print("Logged in successfully!")} else {stop("Could not login")}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

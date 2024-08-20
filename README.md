@@ -1,3 +1,3 @@
-## [Customized dhis2 web client](https://g-mwangi.shinyapps.io/Dhis2Client/)
+## [Customized dhis2 web service](https://g-mwangi.shinyapps.io/Dhis2Client/)
 
 

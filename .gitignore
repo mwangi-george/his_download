@@ -50,3 +50,6 @@ rsconnect/
 
 # database file
 metadata.db
+
+# working file
+working_file.Rmd

@@ -45,17 +45,8 @@ server <- function(input, output, session) {
   })
 
   observe({
-    input$login
-
-    # dhis2 connection using dhis2r package
-    his_con <- Dhis2r$new(
-      base_url = input$his_base_url,
-      username = input$his_user,
-      password = input$his_pass
-    )
-
     # Call download module
-    downloadServer("download_module", his_con, input$his_user, input$his_pass)
+    downloadServer("download_module", input$his_base_url, input$his_user, input$his_pass)
   })
 
   # Logout button

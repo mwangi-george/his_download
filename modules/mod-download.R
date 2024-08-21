@@ -50,8 +50,16 @@ downloadUI <- function(id) {
   )
 }
 
-downloadServer <- function(id, connection_to_his, user, pass) {
+downloadServer <- function(id, his_base_url, user, pass) {
   moduleServer(id, function(input, output, session) {
+
+    # dhis2 connection using dhis2r package
+    connection_to_his <- Dhis2r$new(
+      base_url = his_base_url,
+      username = user,
+      password = pass
+    )
+
     observe({
       input$search_data_elements
 
